@@ -23,16 +23,16 @@ def conv3x3(in_planes, out_planes, stride=1):
 class Pretrain_VIT(BaseModel):
     def __init__(self, num_classes=10):
         last_dim = 768
-        super(Pretrain_VIT, self).__init__(last_dim, num_classes)
+        super(Pretrain_VIT, self).__init__(last_dim, num_classes
 
         self.in_planes = 64
         self.last_dim = 768
 
-        mu = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1).cuda()
-        std = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1).cuda()
+        mu = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).cuda()
+        std = torch.tensor([0.5, 0.5, 0.5]).view(3, 1, 1).cuda()
         self.norm = lambda x: ( x - mu ) / std
-        self.backbone = timm.create_model("vit_base_patch16_224", pretrained=True)
-        self.backbone.head= torch.nn.Identity()
+        self.backbone = models.vit_b_16(pretrained=True)
+        self.backbone.heads = torch.nn.Identity()
         i = 0
         num = 76
         for param in self.backbone.parameters():
