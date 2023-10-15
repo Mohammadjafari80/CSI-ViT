@@ -53,8 +53,10 @@ def train(P, epoch, model, criterion, optimizer, scheduler, loader, train_exposu
             batch_size = images.size(0)
             images = images.to(device)
             exposure_images = exposure_images.to(device)
-            images1, images2 = images.repeat(2, 1, 1, 1).chunk(2) 
-            exposure_images1, exposure_images2 = exposure_images.repeat(2, 1, 1, 1).chunk(2) 
+            # images1, images2 = images.repeat(2, 1, 1, 1).chunk(2) 
+            # exposure_images1, exposure_images2 = exposure_images.repeat(2, 1, 1, 1).chunk(2) 
+            images1, images2 = hflip(images.repeat(2, 1, 1, 1)).chunk(2)  # hflip
+            exposure_images1, exposure_images2 = hflip(exposure_images.repeat(2, 1, 1, 1)).chunk(2)  # hflip
         else:
             batch_size = images[0].size(0)
             images1, images2 = images[0].to(device), images[1].to(device)
